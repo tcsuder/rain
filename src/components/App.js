@@ -1,25 +1,24 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import React, { useState } from 'react';
+import './styles.scss';
 
-const style = css`
-  text-align: center;
-  h1 {
-    color: hotpink;
-  }
-  h2 {
-    color: papayawhip;
-  }
-`;
+const App = () => {
+  const [drops, setDrops] = useState(20);
+  const rain = Array.apply(null, new Array(drops));
 
-function App() {
   return (
-    <div css={style} className="App">
-      <header className="App-header">
-        <h1>This is Tyler's start react app!</h1>
-        <h2>it's for reference</h2>
-      </header>
+    <div className="App">
+      <div className="sky">
+        {rain.map((_, idx) => (
+          <div key={idx} className="drop" />
+        ))}
+      </div>
+      <div
+        className="earth"
+        onClick={() => {
+          setDrops(drops + 10);
+        }}></div>
     </div>
   );
-}
+};
 
 export default App;

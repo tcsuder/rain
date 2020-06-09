@@ -1,0 +1,76 @@
+html,
+body,
+#root {
+  font-family: 'Helvetica Neue', sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  position: relative;
+}
+
+.App {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sky {
+  background: #00271c;
+  box-shadow: inset 0 0 400px #111111;
+  height: 80%;
+  overflow: hidden;
+  position: relative;
+}
+
+.earth {
+  background: linear-gradient(#0d0902, black);
+  height: 20%;
+  overflow: hidden;
+  position: relative;
+}
+
+.drop {
+  background: white;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    #d8fff4 100%
+  );
+  height: 150px;
+  position: absolute;
+  width: 5px;
+  border-radius: 5px;
+}
+
+@for $i from 1 through 500 {
+  $top: (random(50) + 50) * 1%;
+  $left: random(200) * 0.5%;
+  $opacity: (random(30) + 30) * 0.04;
+  $delay: random(20) - 1s;
+
+  .drop:nth-of-type(#{$i}) {
+    animation-name: rain-#{$i};
+    animation-delay: $delay;
+    animation-duration: random(6) + 2s;
+    animation-iteration-count: infinite;
+    left: $left;
+    opacity: $opacity;
+    top: -$top;
+  }
+
+  @keyframes rain-#{$i} {
+    0% {
+      left: $left;
+      opacity: $opacity;
+      top: -$top;
+    }
+    100% {
+      opacity: 0;
+      top: $top + 40%;
+    }
+  }
+}
