@@ -11,8 +11,10 @@ body,
   position: relative;
 }
 
-$skyHeight: 80%;
-$earthHeight: 20%;
+$skyHeight: 90%;
+$earthHeight: 10%;
+$puddleWidth: 200px;
+$puddleCenter: $puddleWidth / 2;
 
 .App {
   height: 100%;
@@ -31,13 +33,28 @@ $earthHeight: 20%;
     background: white;
     background: linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 40%,
       #d8fff4 100%
     );
     height: 150px;
     position: absolute;
     width: 5px;
     border-radius: 5px;
+  }
+}
+
+.ground {
+  height: 1px;
+  position: absolute;
+  width: 100vw;
+  top: calc(#{$skyHeight} - 5px);
+  .splash {
+    position: absolute;
+    .droplet {
+      position: relative;
+      border-radius: 100%;
+      background-color: #d8fff4;
+    }
   }
 }
 
@@ -48,15 +65,15 @@ $earthHeight: 20%;
   position: relative;
   .puddle {
     background: white;
-    background: linear-gradient(to top, rgba(13, 9, 2, 0.2) 42%, #d8fff4 100%);
-    height: 100px;
+    background: linear-gradient(to top, rgba(13, 9, 2, 0.3) 40%, #d8fff4 100%);
+    height: $puddleWidth;
     position: absolute;
-    width: 100px;
+    width: $puddleWidth;
     border-radius: 100%;
   }
 }
 
-@for $i from 1 through 500 {
+@for $i from 1 through 200 {
   $top: (random(50) + 50) * 1%;
   $left: random(200) * 0.5%;
   $dropOpacity: random(10) * 0.01;
@@ -65,10 +82,10 @@ $earthHeight: 20%;
   $duration: random(6) + 1s;
 
   .sky .drop:nth-of-type(#{$i}) {
-    animation-name: sky-drop-#{$i};
     animation-delay: $delay;
     animation-duration: $duration;
     animation-iteration-count: infinite;
+    animation-name: sky-drop-#{$i};
     left: $left;
     opacity: $dropOpacity;
     top: -50%;
@@ -86,26 +103,106 @@ $earthHeight: 20%;
   }
 
   .earth .puddle:nth-of-type(#{$i}) {
-    animation-name: earth-puddle-#{$i};
-    animation-delay: ($duration + $delay) + ($duration * 0.0588);
+    animation-delay: (($duration * 1.1) + $delay);
     animation-duration: $duration;
+    animation-fill-mode: backwards;
     animation-iteration-count: infinite;
-    left: calc(#{$left} - 50px);
-    opacity: $puddleOpacity;
-    top: -50px;
+    animation-name: earth-puddle-#{$i};
+    left: calc(#{$left} - #{$puddleCenter});
+    opacity: 1;
+    top: -$puddleCenter;
   }
 
   @keyframes earth-puddle-#{$i} {
     0% {
       transform: scale(0);
+      opacity: 0;
     }
 
     45% {
       transform: scale(0);
+      opacity: 1;
     }
 
     100% {
       transform: scale(1);
+      opacity: 0;
+    }
+  }
+
+  .ground .splash:nth-of-type(#{$i}) {
+    left: $left;
+  }
+
+  .ground .splash:nth-of-type(#{$i}) > div {
+    animation-duration: $duration;
+    animation-delay: (($duration * 1.1) + $delay);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    animation-fill-mode: backwards;
+    width: 5px;
+    height: 5px;
+  }
+
+  .ground .splash:nth-of-type(#{$i}) > div:nth-child(1) {
+    width: 5px;
+    height: 5px;
+    top: 50%;
+    left: 50%;
+    animation-name: jumpLeft;
+  }
+
+  .ground .splash:nth-of-type(#{$i}) > div:nth-child(2) {
+    width: 3px;
+    height: 3px;
+    top: 30%;
+    left: 50%;
+    animation-name: jumpLeft;
+    // animation-delay: calc(#{$delay} + 0.1s);
+  }
+
+  .ground .splash:nth-of-type(#{$i}) > div:nth-child(3) {
+    width: 1px;
+    height: 1px;
+    top: 20%;
+    left: 70%;
+    animation-name: jumpRight;
+    // animation-delay: calc(#{$delay} + 0.15s);
+  }
+
+  @keyframes jumpLeft {
+    0% {
+      transform: translate(0, 0) scale(0);
+    }
+
+    45% {
+      transform: translate(0, 0) scale(0);
+    }
+
+    60% {
+      transform: translate(-30px, -60px) scale(1);
+    }
+
+    100% {
+      transform: translate(-40px, 0px) scale(0.3);
+    }
+  }
+
+  @keyframes jumpRight {
+    0% {
+      transform: translate(0, 0) scale(0);
+    }
+
+    45% {
+      transform: translate(0, 0) scale(0);
+    }
+
+    60% {
+      transform: translate(10px, -40px) scale(1);
+    }
+
+    100% {
+      transform: translate(20px, 0px) scale(0.5);
     }
   }
 }
