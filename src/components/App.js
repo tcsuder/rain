@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './styles.scss';
 
 const App = () => {
-  const [drops, setDrops] = useState(20);
+  const [drops, setDrops] = useState(5);
   const rain = Array.apply(null, new Array(drops));
 
   return (
@@ -16,7 +16,11 @@ const App = () => {
         className="earth"
         onClick={() => {
           setDrops(drops + 10);
-        }}></div>
+        }}>
+        {rain.map((_, idx) => (
+          <div key={idx} className="puddle" />
+        ))}
+      </div>
     </div>
   );
 };

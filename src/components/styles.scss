@@ -11,6 +11,9 @@ body,
   position: relative;
 }
 
+$skyHeight: 80%;
+$earthHeight: 20%;
+
 .App {
   height: 100%;
   width: 100%;
@@ -21,56 +24,88 @@ body,
 .sky {
   background: #00271c;
   box-shadow: inset 0 0 400px #111111;
-  height: 80%;
+  height: $skyHeight;
   overflow: hidden;
   position: relative;
+  .drop {
+    background: white;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      #d8fff4 100%
+    );
+    height: 150px;
+    position: absolute;
+    width: 5px;
+    border-radius: 5px;
+  }
 }
 
 .earth {
   background: linear-gradient(#0d0902, black);
-  height: 20%;
+  height: $earthHeight;
   overflow: hidden;
   position: relative;
-}
-
-.drop {
-  background: white;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    #d8fff4 100%
-  );
-  height: 150px;
-  position: absolute;
-  width: 5px;
-  border-radius: 5px;
+  .puddle {
+    background: white;
+    background: linear-gradient(to top, rgba(13, 9, 2, 0.2) 42%, #d8fff4 100%);
+    height: 100px;
+    position: absolute;
+    width: 100px;
+    border-radius: 100%;
+  }
 }
 
 @for $i from 1 through 500 {
   $top: (random(50) + 50) * 1%;
   $left: random(200) * 0.5%;
-  $opacity: (random(30) + 30) * 0.04;
+  $dropOpacity: random(10) * 0.01;
+  $puddleOpacity: 1 - (random(4) * 0.01);
   $delay: random(20) - 1s;
+  $duration: random(6) + 1s;
 
-  .drop:nth-of-type(#{$i}) {
-    animation-name: rain-#{$i};
+  .sky .drop:nth-of-type(#{$i}) {
+    animation-name: sky-drop-#{$i};
     animation-delay: $delay;
-    animation-duration: random(6) + 2s;
+    animation-duration: $duration;
     animation-iteration-count: infinite;
     left: $left;
-    opacity: $opacity;
-    top: -$top;
+    opacity: $dropOpacity;
+    top: -50%;
   }
 
-  @keyframes rain-#{$i} {
+  @keyframes sky-drop-#{$i} {
     0% {
-      left: $left;
-      opacity: $opacity;
-      top: -$top;
+      opacity: $dropOpacity;
+      top: -50%;
     }
     100% {
-      opacity: 0;
-      top: $top + 40%;
+      opacity: 1;
+      top: 100%;
+    }
+  }
+
+  .earth .puddle:nth-of-type(#{$i}) {
+    animation-name: earth-puddle-#{$i};
+    animation-delay: ($duration + $delay) + ($duration * 0.0588);
+    animation-duration: $duration;
+    animation-iteration-count: infinite;
+    left: calc(#{$left} - 50px);
+    opacity: $puddleOpacity;
+    top: -50px;
+  }
+
+  @keyframes earth-puddle-#{$i} {
+    0% {
+      transform: scale(0);
+    }
+
+    45% {
+      transform: scale(0);
+    }
+
+    100% {
+      transform: scale(1);
     }
   }
 }
