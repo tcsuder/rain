@@ -2,9 +2,9 @@ import React, { Fragment, useState } from 'react';
 import './styles.scss';
 
 const App = () => {
-  const [drops, setDrops] = useState(5);
+  const [drops, setDrops] = useState(6);
   const rain = Array.apply(null, new Array(drops));
-  const droplets = Array.apply(null, new Array(3));
+  const droplets = Array.apply(null, new Array(6));
 
   return (
     <div className="App">
@@ -17,7 +17,10 @@ const App = () => {
         {rain.map((_, i) => (
           <div key={i} className="splash">
             {droplets.map((_, j) => (
-              <div key={j} className="droplet" />
+              <div
+                key={j}
+                className={Math.floor(Math.random() * 2) === 0 ? 'droplet' : ''}
+              />
             ))}
           </div>
         ))}
