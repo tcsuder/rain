@@ -16,20 +16,20 @@ const modifyDropCount = (drops) => {
 const buildArray = (count) => Array.apply(null, new Array(count));
 
 const App = () => {
-  const rain = useState(buildArray(20))[0];
-  const droplets = useState(buildArray(6))[0];
+  const [rain, setRain] = useState(20);
+  const droplets = useState(6)[0];
 
   return (
     <div className="App">
       <div className="sky">
-        {rain.map((_, i) => (
+        {buildArray(rain).map((_, i) => (
           <div key={i} className="drop" />
         ))}
       </div>
       <div className="ground">
-        {rain.map((_, i) => (
+        {buildArray(rain).map((_, i) => (
           <div key={i} className="splash">
-            {droplets.map((_, j) => (
+            {buildArray(droplets).map((_, j) => (
               <div
                 key={j}
                 className={Math.floor(Math.random() * 2) === 0 ? 'droplet' : ''}
@@ -39,9 +39,23 @@ const App = () => {
         ))}
       </div>
       <div className="earth">
-        {rain.map((_, i) => (
+        {buildArray(rain).map((_, i) => (
           <div key={i} className="puddle" />
         ))}
+      </div>
+      <div className="controls">
+        <button
+          onClick={() => {
+            rain < 70 && setRain(rain + 5);
+          }}>
+          +
+        </button>
+        <button
+          onClick={() => {
+            rain > 5 && setRain(rain - 5);
+          }}>
+          -
+        </button>
       </div>
     </div>
   );

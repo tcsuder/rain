@@ -39,6 +39,24 @@ $puddleCenter: $puddleWidth / 2;
   flex-direction: column;
 }
 
+.controls {
+  position: absolute;
+  top: $skyHeight;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  button {
+    margin: 0 40px;
+    background: transparent;
+    border: none;
+    color: $greenWhite;
+    font-size: 3.5rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
 .sky {
   background: $darkGreen;
   box-shadow: inset 0 0 400px black;
