@@ -1,10 +1,23 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
+import { useInterval } from '../hooks/useInterval';
 import './styles.scss';
 
+const modifyDropCount = (drops) => {
+  // get small subset
+  const number = Math.floor(Math.random() * (drops / 2));
+  // get random positive / negative number
+  const mod = number % 2 === 0 ? number * -1 : number;
+  // perform additiona / subtraction within mathematical boundries
+  const newDrops = drops + mod > 0 && drops + mod < 50 ? drops + mod : drops;
+
+  return drops + mod;
+};
+
+const buildArray = (count) => Array.apply(null, new Array(count));
+
 const App = () => {
-  const [drops, setDrops] = useState(6);
-  const rain = Array.apply(null, new Array(drops));
-  const droplets = Array.apply(null, new Array(6));
+  const rain = useState(buildArray(20))[0];
+  const droplets = useState(buildArray(6))[0];
 
   return (
     <div className="App">
@@ -25,15 +38,7 @@ const App = () => {
           </div>
         ))}
       </div>
-      <div
-        className="earth"
-        onClick={() => {
-          if (drops < 100) {
-            setDrops(drops + 10);
-          } else {
-            setDrops(5);
-          }
-        }}>
+      <div className="earth">
         {rain.map((_, i) => (
           <div key={i} className="puddle" />
         ))}
